@@ -19,3 +19,4 @@ out
 .cache
 i18n/token.json
 logs
+.idea
