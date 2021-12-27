@@ -1,43 +1,45 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {MAX_CELL} from "../constant";
+import {getInitialTile} from "../util/tile";
 
 export default function Game() {
-  return (
-    <div className="game-container">
-      <div className="grid-container">
-        <div className="grid-row">
-          <div className="grid-cell"></div>
-          <div className="grid-cell"></div>
-          <div className="grid-cell"></div>
-          <div className="grid-cell"></div>
-        </div>
-        <div className="grid-row">
-          <div className="grid-cell"></div>
-          <div className="grid-cell"></div>
-          <div className="grid-cell"></div>
-          <div className="grid-cell"></div>
-        </div>
-        <div className="grid-row">
-          <div className="grid-cell"></div>
-          <div className="grid-cell"></div>
-          <div className="grid-cell"></div>
-          <div className="grid-cell"></div>
-        </div>
-        <div className="grid-row">
-          <div className="grid-cell"></div>
-          <div className="grid-cell"></div>
-          <div className="grid-cell"></div>
-          <div className="grid-cell"></div>
-        </div>
-      </div>
+    const [tileList, setTileList] = useState([]);
 
-      <div className="tile-container">
-        <div className="tile tile-4 tile-position-1-2 tile-new">
-          <div className="tile-inner">4</div>
+    const makeCell = (count) => {
+        return Array.from({length: count}, (_, i) => i);
+    }
+
+    useEffect(() => {
+        const newTileList = getInitialTile();
+        setTileList(newTileList);
+    }, []);
+
+    return (
+        <div className="game-container">
+            <div className="grid-container">
+                {makeCell(MAX_CELL).map(i1 =>
+                    <div
+                        key={i1}
+                        className="grid-row"
+                    >
+                        { makeCell(MAX_CELL).map(i2 =>
+                            <div key={i2} className="grid-cell"></div>
+                        )}
+                    </div>
+                )}
+            </div>
+            
+            {/*TODO: 숫자 */}
+            <div className="tile-container">
+                { tileList.map(({id, value, x, y}, i) =>
+                    <div
+                        key={id}
+                        className={`tile tile-${value} tile-position-${x}-${y} tile-new`}
+                    >
+                        <div className="tile-inner">{value}</div>
+                    </div>
+                )}
+            </div>
         </div>
-        <div className="tile tile-2 tile-position-1-3 tile-new">
-          <div className="tile-inner">2</div>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
