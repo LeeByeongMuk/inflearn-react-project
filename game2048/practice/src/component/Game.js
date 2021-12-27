@@ -2,9 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {MAX_CELL} from "../constant";
 import {getInitialTile} from "../util/tile";
 import Tile from "./Tile";
+import useMoveTile from "../hook/useMoveTile";
 
 export default function Game() {
     const [tileList, setTileList] = useState([]);
+    useMoveTile({tileList, setTileList});
 
     const makeCell = (count) => {
         return Array.from({length: count}, (_, i) => i);
@@ -13,21 +15,6 @@ export default function Game() {
     useEffect(() => {
         const newTileList = getInitialTile();
         setTileList(newTileList);
-    }, []);
-
-
-    // 키보드 이벤트
-    useEffect(() => {
-        function callback(e) {
-            if (e.key === key) {
-                e.preventDefault();
-            }
-        }
-        window.addEventListener('keydown', callback);
-
-        return () => {
-            window.removeEventListener('keydown', callback);
-        }
     }, []);
 
     return (
