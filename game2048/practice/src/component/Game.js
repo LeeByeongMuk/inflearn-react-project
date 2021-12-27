@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {MAX_CELL} from "../constant";
 import {getInitialTile} from "../util/tile";
+import Tile from "./Tile";
 
 export default function Game() {
     const [tileList, setTileList] = useState([]);
@@ -12,6 +13,21 @@ export default function Game() {
     useEffect(() => {
         const newTileList = getInitialTile();
         setTileList(newTileList);
+    }, []);
+
+
+    // 키보드 이벤트
+    useEffect(() => {
+        function callback(e) {
+            if (e.key === key) {
+                e.preventDefault();
+            }
+        }
+        window.addEventListener('keydown', callback);
+
+        return () => {
+            window.removeEventListener('keydown', callback);
+        }
     }, []);
 
     return (
@@ -28,16 +44,10 @@ export default function Game() {
                     </div>
                 )}
             </div>
-            
-            {/*TODO: 숫자 */}
+
             <div className="tile-container">
-                { tileList.map(({id, value, x, y}, i) =>
-                    <div
-                        key={id}
-                        className={`tile tile-${value} tile-position-${x}-${y} tile-new`}
-                    >
-                        <div className="tile-inner">{value}</div>
-                    </div>
+                { tileList.map(({id, ...props}) =>
+                    <Tile key={id} {...props} />
                 )}
             </div>
         </div>
