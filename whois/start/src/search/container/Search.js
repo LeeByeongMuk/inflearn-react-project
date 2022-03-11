@@ -5,25 +5,26 @@ import SearchInput from "../component/SearchInput";
 import History from "../../common/component/History";
 import {useDispatch, useSelector} from "react-redux";
 import {actions} from "../state";
+import {actions as authActions} from "../../auth/state";
+import useNeedLogin from "../../common/hook/useNeedLogin";
 
 export default function Search() {
+  useNeedLogin();
   const dispatch = useDispatch();
-  const history = useSelector(state => {
-    console.log(state);
-    return state.search.history;
-  });
-
-  console.log(history);
-
+  const history = useSelector(state => state.search.history);
   useEffect(() => {
     dispatch(actions.fetchAllHistory());
   }, [dispatch]);
+
+  function logout() {
+    dispatch(authActions.fetchLogout());
+  }
 
   return (
     <>
       <Row justify="end" style={{padding: 20}}>
         <Col>
-          <Settings logout={() => {}}/>
+          <Settings logout={logout}/>
         </Col>
       </Row>
       <Row justify="center" style={{marginTop: 100}}>
