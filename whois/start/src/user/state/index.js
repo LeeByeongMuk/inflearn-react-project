@@ -9,6 +9,8 @@ export const Types = {
   SetValue: 'user/SetValue',
   FetchUser: 'user/FetchUser',
   FetchUpdateUser: 'user/FetchUpdateUser',
+  FetchUserHistory: 'user/FetchUserHistory',
+  AddHistory: 'user/AddHistory'
 };
 
 export const actions = {
@@ -21,13 +23,25 @@ export const actions = {
     value,
     fetchKey,
     [FETCH_KEY]: fetchKey
+  }),
+  fetchUserHistory: name => ({
+    type: Types.FetchUserHistory,
+    name
+  }),
+  addHistory: history => ({
+    type: Types.AddHistory,
+    history
   })
 };
 
 const INITIAL_STATE = {
-  user: undefined
+  user: undefined,
+  userHistory: []
 };
 const reducer = createReducer(INITIAL_STATE, {
-  [Types.SetValue]: setValueReducer
+  [Types.SetValue]: setValueReducer,
+  [Types.AddHistory]: (state, action) => (
+    state.userHistory = [action.history, ...state.userHistory]
+  )
 });
 export default reducer;
